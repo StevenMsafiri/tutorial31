@@ -5,7 +5,7 @@ import pandas
 BACKGROUND_COLOR = "#B1DDC6"
 current_card = {}
 to_learn = {}
-
+# daba = []
 try:
     data = pandas.read_csv("./data/words_to_learn.csv")
 
