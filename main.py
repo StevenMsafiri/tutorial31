@@ -5,12 +5,11 @@ import pandas
 BACKGROUND_COLOR = "#B1DDC6"
 current_card = {}
 to_learn = {}
-# daba = []
-try:
-    data = pandas.read_csv("./data/words_to_learn.csv")
+original_data = pandas.read_csv("./data/french_words.csv")
 
+try:
+    data = pandas.read_csv("./data/french_words.csv")
 except FileNotFoundError:
-    original_data = pandas.read_csv("./data/french_words.csv")
     to_learn = original_data.to_dict(orient="records")
 else:
     to_learn = data.to_dict(orient='records')
@@ -18,11 +17,16 @@ else:
 def random_french_word():
     global current_card,flip_timer
     window.after_cancel(flip_timer)
-    current_card = random.choice(to_learn)
-    main_card.itemconfig(card_title, text="French", fill="black")
-    main_card.itemconfig(card_word, text= current_card["French"], fill="black")
-    main_card.itemconfig(card_background, image=card_front)
-    flip_timer = window.after(3000, func=flip_card)
+    if len(to_learn) < 1:
+        main_card.itemconfig(card_title, text="Over", fill="black")
+        main_card.itemconfig(card_word, text="You know all words", fill="black")
+
+    else:
+        current_card = random.choice(to_learn)
+        main_card.itemconfig(card_title, text="French", fill="black")
+        main_card.itemconfig(card_word, text=current_card["French"], fill="black")
+        main_card.itemconfig(card_background, image=card_front)
+        flip_timer = window.after(3000, func=flip_card)
 
 def is_known():
     to_learn.remove(current_card)
